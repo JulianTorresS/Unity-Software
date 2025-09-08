@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Eliminar Traducción{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">¿Estás seguro de que quieres eliminar este registro?</h4>
+        <p>Esta acción no se puede deshacer.</p>
+        <p><strong>Registro a eliminar:</strong> Traducción del {{ object.created_at|date:"d M Y H:i" }}</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Sí, Eliminar</button>
+            <a href="{% url 'translation:list' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

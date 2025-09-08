@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Traducciones{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="section-header">Historial de Traducciones</h2>
+    <a href="{% url 'translation:create' %}" class="btn btn-success mb-3">
+        <i class="bi bi-plus-circle me-2"></i>Nueva Traducción
+    </a>
+    <div class="card p-4">
+        {% if translations %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Texto Original</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for translation in translations %}
+                        <tr>
+                            <td>{{ translation.created_at|date:"d M Y H:i" }}</td>
+                            <td>{{ translation.original_text|truncatechars:50 }}</td>
+                            <td>
+                                <a href="{% url 'translation:detail' translation.pk %}" class="btn btn-primary btn-sm" title="Ver detalles">
+                                    <i class="bi bi-eye text-white"></i> 
+                                </a>
+                                <a href="{% url 'translation:delete' translation.pk %}" class="btn btn-danger btn-sm" title="Eliminar">
+                                    <i class="bi bi-trash"></i> 
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No hay traducciones registradas.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

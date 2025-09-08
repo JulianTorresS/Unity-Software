@@ -1,0 +1,7 @@
+requests
+Pillow
+Django
+django-bootstrap5
+psycopg2-binary # Para conectar con PostgreSQL
+python-decouple # Para gestionar variables de entorno
+django-crispy-forms # Opcional, pero útil para formularios

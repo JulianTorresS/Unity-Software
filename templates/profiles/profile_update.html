@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% load static %}
+{% block title %}Mi Perfil{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <h2 class="section-header">Mi Perfil</h2>
+        
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card p-4 h-100">
+                    <h5 class="card-title text-center mb-4">Información del Perfil</h5>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="text-center mb-4">
+                            {% if user.profile.photo %}
+                                <img src="{{ user.profile.photo.url }}" class="rounded-circle mb-3" width="90" height="90" alt="Profile Picture" style="object-fit: cover;">
+                            {% else %}
+                                <div class="rounded-circle d-inline-block bg-light d-flex align-items-center justify-content-center" style="width: 120px; height: 120px;">
+                                    <i class="bi bi-person-fill" style="font-size: 4rem; color: #ccc;"></i>
+                                </div>
+                            {% endif %}
+                            
+                            <div class="form-group mt-3">
+                                <label class="form-label d-block text-muted">Cambiar Foto de Perfil</label>
+                                {{ profile_form.photo }}
+                            </div>
+                        </div>
+                        
+                        <div class="form-floating mb-3">
+                            {{ profile_form.first_name }}
+                            <label for="{{ profile_form.first_name.id_for_label }}">Nombre</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            {{ profile_form.last_name }}
+                            <label for="{{ profile_form.last_name.id_for_label }}">Apellido</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            {{ profile_form.email }}
+                            <label for="{{ profile_form.email.id_for_label }}">Correo Electrónico</label>
+                        </div>
+                        
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" name="update_profile" class="btn btn-primary btn-lg rounded-pill">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+                <div class="card p-4 h-100">
+                    <h5 class="card-title text-center mb-4">Cambiar Contraseña</h5>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            {{ password_form.old_password }}
+                            <label for="{{ password_form.old_password.id_for_label }}">Contraseña actual</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ password_form.new_password1 }}
+                            <label for="{{ password_form.new_password1.id_for_label }}">Nueva contraseña</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ password_form.new_password2 }}
+                            <label for="{{ password_form.new_password2.id_for_label }}">Confirma la nueva contraseña</label>
+                        </div>
+                        
+                        {% if password_form.errors %}
+                            <div class="alert alert-danger mt-3">
+                                <ul class="list-unstyled mb-0">
+                                    {% for field, errors in password_form.errors.items %}
+                                        {% for error in errors %}
+                                            {% if field == '__all__' %}
+                                                <li>{{ error }}</li>
+                                            {% else %}
+                                                <li>{{ password_form.fields|get_field_name:field }}: {{ error }}</li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" name="change_password" class="btn btn-secondary btn-lg rounded-pill">Actualizar Contraseña</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

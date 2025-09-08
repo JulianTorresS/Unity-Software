@@ -1,0 +1,45 @@
+{% extends 'base_auth.html' %}
+{% load static %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card border-0 shadow-lg" style="max-width: 450px; width: 100%;">
+        <div class="card-body p-5">
+            <h3 class="card-title text-center mb-4 text-primary">Iniciar Sesión</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control rounded-pill bg-light border-0" id="id_username" name="username" placeholder="" required>
+                    <label for="id_username" class="text-muted">Nombre de Usuario</label>
+                </div>
+                <div class="form-floating mb-4">
+                    <input type="password" class="form-control rounded-pill bg-light border-0" id="id_password" name="password" placeholder="" required>
+                    <label for="id_password" class="text-muted">Contraseña</label>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg rounded-pill mt-3">Iniciar Sesión</button>
+                </div>
+            </form>
+            <div class="text-center mt-4">
+                <a href="{% url 'password_reset' %}" class="text-muted text-decoration-none">¿Olvidaste tu contraseña?</a>
+                <br>
+                <span class="text-muted">¿No tienes cuenta? <a href="{% url 'register' %}" class="text-primary text-decoration-none fw-bold">Regístrate</a></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Este es el bloque clave que debes agregar #}
+{% if form.errors %}
+    <div id="formErrorsContainer" class="d-none">
+        {% for field_errors in form.errors.values %}
+            {% for error in field_errors %}
+                <span class="form-error" data-message="{{ error|escapejs }}"></span>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% endblock %}

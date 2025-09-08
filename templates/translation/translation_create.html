@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}Traductor de Conversación{% endblock %}
+
+{% block head_extra %}
+    <style>
+        /* Estilos para los campos de idioma */
+        .language-list-container {
+            /* No se necesitan estilos complejos aquí, la cuadrícula de Bootstrap se encargará del diseño */
+        }
+    </style>
+{% endblock head_extra %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h2 class="section-header">Traductor Instantáneo</h2>
+            <div class="d-flex justify-content-between align-items-end mb-3">
+                <div></div>
+                {% include 'includes/back_button.html' %}
+            </div>
+            <div class="card p-4 mb-4">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ form.original_text.id_for_label }}" class="form-label">Texto a traducir</label>
+                        {{ form.original_text }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Idioma de destino</label>
+                        <div class="language-list-container row g-2">
+                            {% for radio in form.target_language %}
+                                <div class="col-4">
+                                    <div class="form-check">
+                                        {{ radio.tag }}
+                                        <label class="form-check-label" for="{{ radio.id_for_label }}">
+                                            {{ radio.choice_label }}
+                                        </label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-warning mt-3">Traducir</button>
+                </form>
+            </div>
+
+            {% if translated_text %}
+            <div class="card p-4 mt-4 bg-light">
+                <h4 class="card-title text-success">Resultado de la Traducción</h4>
+                <p>{{ translated_text }}</p>
+            </div>
+            {% endif %}
+
+            <div class="mt-5">
+                <h3 class="section-header">Historial Reciente</h3>
+                {% if history %}
+                    <div class="list-group">
+                        {% for item in history %}
+                        <a href="{% url 'translation:detail' item.pk %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">{{ item.original_text|truncatechars:50 }}</h6>
+                                <small class="text-muted">{{ item.created_at|date:"d M Y H:i" }}</small>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">{{ item.target_language }}</span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">No hay traducciones aún.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
