@@ -12,9 +12,10 @@ Migraciones:
 python manage.py makemigrations "profiles"         eso es para crear migraciones, lo puedes hacer para toda la aplicacion o por modulo
 python manage.py migrate       para aplicar la migracion 
 
-
-
 //Comandos Git
+
+git fetch --all   traer todas las ramas remotas
+
 
 
 
