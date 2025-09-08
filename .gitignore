@@ -1,0 +1,14 @@
+# Directorios de Python y Django
+.envs/
+__pycache__/
+*.pyc
+
+# Base de datos
+*.sqlite3
+
+# Archivos de configuración
+.env
+
+# Directorios de media y logs
+media/
+logs/
